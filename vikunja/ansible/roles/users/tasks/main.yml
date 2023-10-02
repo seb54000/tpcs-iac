@@ -1,0 +1,5 @@
+---
+- include_tasks: user.yml
+  with_items: "{{ WHY_SHOULD_I_BE? }}"
+  loop_control:
+    loop_var: user

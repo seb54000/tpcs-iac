@@ -1,0 +1,27 @@
+
+# https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
+
+
+plugin: amazon.aws.aws_ec2
+regions:
+  - eu-west-3
+# filters:
+#   # All instances with their `Environment` tag set to `dev`
+#   tag:Environment: dev
+#   # All dev and QA hosts
+#   tag:Environment:
+#     - dev
+#     - qa
+#   instance.group-id: sg-xxxxxxxx
+
+hostnames:
+  - tag:Name
+keyed_groups:
+  - key: tags
+
+# groups:
+#   - ip-address
+  # - tag:Role
+
+compose:
+  ansible_host: public_ip_address

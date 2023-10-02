@@ -1,0 +1,60 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+    update_cache: true
+
+# TODO ensure nginx is install as systemd unit (this is done by default but...)
+
+- name: Install unzip
+  apt:
+    name: unzip
+    state: latest
+    update_cache: true
+
+# TODO make a loop for list of apt package ?
+
+- name: Ensure vikunja directory exists
+  ansible.builtin.file:
+    path: /app/vikunja
+    state: directory
+    mode: '0755'
+
+- name: Download Vikunja frontend
+  ansible.builtin.unarchive:
+    src: https://dl.vikunja.io/frontend/vikunja-frontend-0.20.3.zip
+    dest: /app/vikunja
+    remote_src: yes
+# TODO add a vraiable for the vikunja front version
+
+# TODO template the index.html file or modify it after unzip (using lineinfile module)
+# RUN sed -i 's/window.API_URL = '\''\/api\/v1'\''/window.API_URL = '\''localhost:3456\/api\/v1'\''/g' vikunja/index.html
+
+- name: deploy index.html
+  template:
+    src: "index.html.j2"
+    dest: "/var/www/html/index.html"
+    # owner: "WHICH_USER_SHOULD_IT_BE"
+    # group: "WHICH_GROUP_SHOULD_IT_BE"
+    mode: 0666
+  notify: Reload nginx
+
+- name: deploy nginx conf
+  template:
+    src: "nginx.conf.j2"
+    # dest: "/etc/nginx/conf.d/nginx.conf"
+    dest: "/etc/nginx/sites-enabled/default"
+    # owner: "WHICH_USER_SHOULD_IT_BE"
+    # group: "WHICH_GROUP_SHOULD_IT_BE"
+    mode: 0666
+  notify: Reload nginx
+
+# - name: deploy vhosts
+#   template:
+#     src: "nginx_vhost.conf.j2"
+#     dest: "/etc/nginx/sites-enabled/default"
+#     # owner: "WHICH_USER_SHOULD_IT_BE"
+#     # group: "WHICH_GROUP_SHOULD_IT_BE"
+#     mode: 0600
+#   notify: Reload nginx

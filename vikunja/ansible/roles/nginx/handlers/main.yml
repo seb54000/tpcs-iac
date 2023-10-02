@@ -1,0 +1,8 @@
+---
+- name: Reload nginx
+  listen:  Reload nginx
+  command: sudo service nginx reload
+
+- name: Restart nginx
+  listen:  Restart nginx
+  command: sudo service nginx restart
