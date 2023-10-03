@@ -19,8 +19,8 @@
   #         ssh_key_pub: ANOTHER_PUBLIC_SSH_KEY
   #   - role: base
 
-- hosts: _Role_front
-# - hosts: front
+# - hosts: _Role_front
+- hosts: front
   become: true
   become_method: sudo
   become_user: root
@@ -28,7 +28,7 @@
   roles:
     - role: nginx
 
-- hosts: _Role_api
+- hosts: api
   become: true
   become_method: sudo
   become_user: root

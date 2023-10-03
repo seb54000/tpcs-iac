@@ -20,3 +20,7 @@ variable "aws_zones" {
 variable "ubuntu_ami" {
   default = "ami-0ec59e7bad062131f"
 }
+
+variable "ssh_key_public" {
+  type = string
+}

@@ -24,4 +24,10 @@ keyed_groups:
   # - tag:Role
 
 compose:
-  ansible_host: public_ip_address
+  ansible_host: private_ip_address
+
+groups:
+  #  https://docs.confluent.io/ansible/current/ansible-prepare.html
+  front: "'front' in tags.Role"
+  api: "'api' in tags.Role"
+  db: "'db' in tags.Role"

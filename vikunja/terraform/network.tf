@@ -60,9 +60,10 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
+  # count = 2
   cidr_block                      = var.aws_private_subnet_cidr
   vpc_id                          = aws_vpc.vpc.id
-  map_public_ip_on_launch         = true
+  # map_public_ip_on_launch         = true
 
   availability_zone = var.aws_zones[0]
 
@@ -78,3 +79,55 @@ resource "aws_route_table_association" "public_routing_table" {
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.internet.id
 }
+
+
+resource "aws_eip" "nat_gateway" {
+  count = 2  # needed for ALB
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "nat_gw" {
+  count = 2  # needed for ALB
+  allocation_id = aws_eip.nat_gateway[count.index].id
+  subnet_id     = aws_subnet.public_subnet[count.index].id
+
+  tags = {
+    Name = "gw NAT"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.gw]
+}
+
+resource "aws_route_table" "nat_gateway" {
+  count = 2  # needed for ALB  
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name        = "${terraform.workspace} nat_gateway"
+    Environment = terraform.workspace
+  }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.nat_gw[count.index].id
+  }
+
+  # route {
+  #   ipv6_cidr_block = "::/0"
+  #   gateway_id      = aws_nat_gateway.nat_gw[count.index].id
+  # }
+
+  lifecycle {
+    ignore_changes = [tags.Name]
+  }
+}
+
+
+resource "aws_route_table_association" "nat_gateway_routing_table" {
+  subnet_id      = aws_subnet.private_subnet.id
+  route_table_id = aws_route_table.nat_gateway[0].id
+}
+# TODO decide how to have multiple NAT gateway and route tables for redudancy
+# We may need to have 2 private subnets for API hosting and add another subnet dedicated to DataBase ?
