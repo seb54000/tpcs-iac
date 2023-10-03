@@ -62,7 +62,8 @@ resource "aws_instance" "db" {
   instance_type          = "t2.medium"
   vpc_security_group_ids =  [
                               aws_security_group.internal_allow_all.id,
-                              aws_security_group.ssh.id
+                              aws_security_group.ssh.id,
+                              aws_security_group.mysql_security_group.id
                             ]
   key_name               = aws_key_pair.keypair.key_name
 

@@ -94,3 +94,20 @@ resource "aws_security_group" "https_http_security_group" {
     Name        = "http/https for ${terraform.workspace}"
   }
 }
+
+resource "aws_security_group" "mysql_security_group" {
+  name        = "mysql"
+  description = "mysql"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "TCP"
+    cidr_blocks = ["${var.aws_private_subnet_cidr}"]
+  }
+  tags = {
+    Environment = terraform.workspace
+    Name        = "mysql for ${terraform.workspace}"
+  }
+}

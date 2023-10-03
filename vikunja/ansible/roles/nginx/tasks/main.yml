@@ -31,10 +31,11 @@
 # TODO template the index.html file or modify it after unzip (using lineinfile module)
 # RUN sed -i 's/window.API_URL = '\''\/api\/v1'\''/window.API_URL = '\''localhost:3456\/api\/v1'\''/g' vikunja/index.html
 
-- name: deploy index.html
+- name: deploy custom index.html as a monitoring file
   template:
     src: "index.html.j2"
-    dest: "/var/www/html/index.html"
+    # dest: "/var/www/html/index.html"
+    dest: "/app/vikunja/monitor.html"
     # owner: "WHICH_USER_SHOULD_IT_BE"
     # group: "WHICH_GROUP_SHOULD_IT_BE"
     mode: 0666

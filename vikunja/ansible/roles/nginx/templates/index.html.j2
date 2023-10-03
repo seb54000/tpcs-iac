@@ -1,10 +1,18 @@
 <H1>
 
-Welcome on host : {{ ansible_hostname }}
+Welcome on host (from inventory) : {{ inventory_hostname }}
 
 <br>
 
-Private IP address is : {{ ansible_hostname }}
+Actual hostname is : {{ ansible_hostname }}
+
+<br>
+
+Private IP address is : {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+
+<br>
+
+Welcome message : {{ welcome_msg }}
 
 </H1>
 

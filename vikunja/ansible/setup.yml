@@ -36,11 +36,11 @@
   roles:
     - role: api
 
-# - hosts: bdd
-#   become: true
-#   become_method: sudo
-#   become_user: root
-#   strategy: linear
-#   roles:
-#     - role: mysql
+- hosts: db
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: mysql
 

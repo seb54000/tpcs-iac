@@ -19,3 +19,22 @@ output "api" {
     }
     ]
 }
+
+output "db" {
+  value = [
+    {
+        "private_ip" = aws_instance.db[*].private_ip
+        "public_ip" = aws_instance.db[*].public_ip
+        "private_dns" = aws_instance.db[*].private_dns
+        "public_dns"   = aws_instance.db[*].public_dns
+    }
+    ]
+}
+
+output "lb-front" {
+  value = aws_lb.lb_front.dns_name
+}
+
+output "lb-api" {
+  value = aws_lb.lb_api.dns_name
+}

@@ -1,0 +1,8 @@
+Host * !15.237.26.201
+      ProxyJump 15.237.26.201
+Host *
+      User ubuntu
+      StrictHostKeyChecking no
+      LogLevel ERROR
+      UserKnownHostsFile /dev/null      
+      IdentityFile ~/tp-centralesupelec-iac/vikunja/terraform/tp-iac
