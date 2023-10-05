@@ -1,0 +1,11 @@
+resource "aws_instance" "test-instance" {
+  count = 2
+
+  ami             = "ami-0a7899f097e6c2e90"   # https://cloud-images.ubuntu.com/locator/ec2/
+  instance_type = "t2.small"
+
+  tags = {
+    Name = "my-test-vm-${count.index}"
+    # Name = "${format("my-test-vm-%03d", count.index + 1)}"
+  }
+}

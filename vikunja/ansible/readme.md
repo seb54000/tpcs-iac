@@ -20,6 +20,10 @@ terraform output -json api | jq -r '.[] | .public_ip[0]'
 terraform output lb-front
 curl lb-front-593290134.eu-west-3.elb.amazonaws.com/monitor.html
 
+In CHROME browser, need INCOGNITO mode + Shift refresh in order to LoadBalance (otherwise, it is always going to the same nginx) - problem does not occur with curl
+
+* https://stackoverflow.com/questions/29854860/session-cookie-not-remove-on-browser-close
+
 ## ansible galaxy commands
 
 ansible-galaxy role list
