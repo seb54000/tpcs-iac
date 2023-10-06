@@ -1,0 +1,3 @@
+- name: Hello print
+  debug:
+    msg: "This is another task file : group1.yml"

@@ -1,9 +1,12 @@
 # Setup environment and simple ansible tests
 
+``` bash
 python3 -m venv ansiblevenv
 source ansiblevenv/bin/activate
+# pip install ansible boto3 botocore
 pip install -r requirements.txt
 ansible-galaxy collection install community.mysql
+```
 
 `ansible -i aws_ec2.yml -m shell _Role_front -a "hostname"`
 

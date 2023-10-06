@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: print var first
+      debug:
+        msg: "group1 : {{ group1_var }}"
+  roles:
+    - role: example_role
+      example_var_list:
+        - name: user1
+          ssh_key_pub: key_user1
+        - name: user2
+          ssh_key_pub: key_user2
+...
