@@ -1,3 +1,2 @@
 ---
-deploy_user: MYDEVOPSUSER
-app_ip: MYAPPSERVER_PRIVATE_IP
+database_name: vikunja

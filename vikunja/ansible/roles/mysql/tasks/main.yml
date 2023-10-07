@@ -14,13 +14,12 @@
     mode: 0600
   notify: "Restart mysql"
 
-- name: Install python3-pip
+- name: Install python3-pip and python3-dev
   package:
-    name: python3-pip
-
-- name: Install python3-dev
-  package:
-    name: python3-dev
+    name: "{{ item }}"
+  loop:
+    - python3-pip
+    - python3-dev
 
 - name: Make sure pymysql is present
   pip:
@@ -53,23 +52,17 @@
 
 - name: Ensure application database exists
   mysql_db:
-    name: "taskslist-{{ env }}"
+    name: "{{ database_name }}"
     state: present
     login_user: root
     login_password: "{{ mysql_root_password }}"
 
-- name: "create user for application database"
+- name: create user for application database with authorisation when login from particular host (api servers)
   mysql_user:
-    name: "{{ DB_USER }}"
-    password: "{{ DB_PASSWORD }}"
+    name: "{{ database_name }}"
+    password: "{{ database_name }}"
     priv: "*.*:ALL"
-    host: "{{ item }}"
+    host: "{{ hostvars[item].private_dns_name }}"
     login_user: root
     login_password: "{{ mysql_root_password }}"
-  with_items:
-    - localhost
-    - "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
-    - "{{ ansible_hostname }}"
-    - 127.0.0.1
-    - ::1
-    - "{{ app_ip }}"
+  loop: "{{ groups['api'] }}"

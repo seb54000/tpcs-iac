@@ -12,7 +12,11 @@ ansible-galaxy collection install community.mysql
 
 ansible-playbook -i aws_ec2.yml setup.yml
 
+    --start-at-task="deploy nginx conf"
+
 ssh -v -i tp-iac -J ubuntu@35.180.33.147 ubuntu@35.180.17.44
+
+ssh -F ssh-config 35.180.172.168
 
 terraform output -json front | jq -r '.[] | .public_ip[0]'
 13.36.166.132

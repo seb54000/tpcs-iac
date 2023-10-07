@@ -30,6 +30,8 @@ resource "aws_instance" "front" {
     Name        = format("front%s-%s", count.index, terraform.workspace)
     Environment = terraform.workspace
     Role        = "front"
+    api_lb_dns  = aws_lb.lb_api.dns_name
+    front_lb_dns  = aws_lb.lb_front.dns_name
   }
 }
 
@@ -41,7 +43,8 @@ resource "aws_instance" "api" {
   instance_type          = "t2.medium"
   vpc_security_group_ids =  [
                               aws_security_group.internal_allow_all.id,
-                              aws_security_group.ssh.id
+                              aws_security_group.ssh.id,
+                              aws_security_group.api_security_group.id
                             ]
   key_name               = aws_key_pair.keypair.key_name
 
@@ -53,6 +56,9 @@ resource "aws_instance" "api" {
     Name        = format("api%s-%s", count.index ,terraform.workspace)
     Environment = terraform.workspace
     Role        = "api"
+    api_lb_dns  = aws_lb.lb_api.dns_name
+    front_lb_dns  = aws_lb.lb_front.dns_name
+    db_ip       = aws_instance.db.private_ip
   }
 }
 
@@ -75,6 +81,8 @@ resource "aws_instance" "db" {
     Name        = format("db-%s", terraform.workspace)
     Environment = terraform.workspace
     Role        = "db"
+    api_lb_dns  = aws_lb.lb_api.dns_name
+    front_lb_dns  = aws_lb.lb_front.dns_name
   }
 }
 

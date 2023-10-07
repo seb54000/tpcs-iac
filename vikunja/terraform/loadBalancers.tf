@@ -49,7 +49,7 @@ resource "aws_lb" "lb_api" {
   name               = "lb-api"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.https_http_security_group.id, aws_security_group.internal_allow_all.id]
+  security_groups    = [aws_security_group.https_http_security_group.id, aws_security_group.internal_allow_all.id, aws_security_group.api_security_group.id]
   subnets            = [for subnet in aws_subnet.public_subnet : subnet.id]
 
   # enable_deletion_protection = true

@@ -1,5 +1,5 @@
-Host * !15.237.26.201
-      ProxyJump 15.237.26.201
+Host * !15.237.142.185
+      ProxyJump 15.237.142.185
 Host *
       User ubuntu
       StrictHostKeyChecking no

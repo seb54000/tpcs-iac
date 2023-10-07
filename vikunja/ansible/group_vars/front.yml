@@ -1,2 +1,5 @@
 ---
 welcome_msg: "This is a front server"
+
+vikunja_front_version: "0.20.3"
+# vikunja_front_version: "0.21.0"

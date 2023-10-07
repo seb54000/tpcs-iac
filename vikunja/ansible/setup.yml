@@ -28,6 +28,14 @@
   roles:
     - role: nginx
 
+- hosts: db
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: mysql
+
 - hosts: api
   become: true
   become_method: sudo
@@ -36,11 +44,5 @@
   roles:
     - role: api
 
-- hosts: db
-  become: true
-  become_method: sudo
-  become_user: root
-  strategy: linear
-  roles:
-    - role: mysql
+# TODO Question : why put api in last ? (because DB is needed for correct function of the API)
 

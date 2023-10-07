@@ -4,8 +4,7 @@
     name: unzip
     state: latest
     update_cache: true
-
-# TODO make a loop for list of apt package ?
+# TODO have a common base role for all hosts with pre requisites like unzip ?
 
 - name: Ensure vikunja directory exists
   ansible.builtin.file:
@@ -15,16 +14,22 @@
 
 - name: Download Vikunja api
   ansible.builtin.unarchive:
-    src: https://dl.vikunja.io/api/0.20.2/vikunja-v0.20.2-linux-amd64-full.zip
+    src: "https://dl.vikunja.io/api/{{ vikunja_api_version }}/vikunja-v{{ vikunja_api_version }}-linux-amd64-full.zip"
     dest: /app/vikunja
     remote_src: yes
-# TODO add a vraiable for the vikunja API version
 
 # ADD https://dl.vikunja.io/api/0.20.2/vikunja-v0.20.2-linux-amd64-full.zip.asc ./
 # RUN gpg --keyserver keyserver.ubuntu.com --recv FF054DACD908493A
 # RUN gpg --verify vikunja-v0.20.2-linux-amd64-full.zip.asc vikunja-v0.20.2-linux-amd64-full.zip
 # TODO add later GPG verification (need to install gpg as an APT package)
 
+# TODO add a hnadler to restat the API in case of an upgrade ?
+
+- name: deploy config file for vikunja API
+  template:
+    src: "config.yml.j2"
+    dest: "/app/vikunja/config.yml"
+    mode: 0644
 
 - name: deploy systemd service unit for api
   template:
@@ -41,3 +46,6 @@
     name: "vikunja"
     enabled: true
     state: "started"
+
+- name: restart api
+  command: systemctl restart vikunja

@@ -95,6 +95,23 @@ resource "aws_security_group" "https_http_security_group" {
   }
 }
 
+resource "aws_security_group" "api_security_group" {
+  name        = "api"
+  description = "api"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 3456
+    to_port     = 3456
+    protocol    = "TCP"
+    cidr_blocks = ["${var.aws_public_subnet_cidr}"]
+  }
+  tags = {
+    Environment = terraform.workspace
+    Name        = "api for ${terraform.workspace}"
+  }
+}
+
 resource "aws_security_group" "mysql_security_group" {
   name        = "mysql"
   description = "mysql"

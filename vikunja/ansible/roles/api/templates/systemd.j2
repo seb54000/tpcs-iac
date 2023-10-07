@@ -12,7 +12,7 @@ After=network.target
 RestartSec=2s
 Type=simple
 WorkingDirectory=/app/vikunja
-ExecStart=/app/vikunja/vikunja/vikunja-v0.20.2-linux-amd64
+ExecStart=/app/vikunja/vikunja-v{{ vikunja_api_version }}-linux-amd64
 Restart=always
 # If you want to bind Vikunja to a port below 1024 uncomment
 # the two values below

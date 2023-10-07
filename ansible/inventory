@@ -1,10 +1,10 @@
 [servers]
-15.236.186.186
-13.38.131.145
+15.236.205.136
+15.237.83.78
 [group1]
-15.236.186.186
+15.236.205.136
 [group2]
-13.38.131.145
+15.237.83.78
 [all:vars]
 ansible_user=ubuntu
 ansible_ssh_private_key_file=../terraform/tf-key
