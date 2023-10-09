@@ -1,0 +1,24 @@
+resource "aws_instance" "test-instance" {
+  count = var.instance_count
+
+  ami             = var.ami
+  instance_type   = "${var.type}"
+
+  tags = {
+    Name = "my-test-vm-${count.index}"
+  }
+}
+
+variable "instance_count" {
+  type = number
+  default = 2
+}
+variable "ami" {
+  type = string
+  description = "AMI reference ID"
+  default = "ami-0a7899f097e6c2e90"
+}
+variable "type" {
+  type = string
+}
+

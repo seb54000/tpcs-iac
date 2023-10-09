@@ -1,0 +1,22 @@
+
+resource "aws_instance" "test-instance" {
+  count = 2
+  ami             = "ami-0a7899f097e6c2e90"
+  instance_type = "t2.small"
+
+  lifecycle {
+    ignore_changes = [
+      tags["Name"],
+    ]
+  }
+
+  tags = {
+    Name = "my-vm-${count.index}"
+  }
+}
+
+resource "aws_ec2_instance_state" "test-instance" {
+  count = 2
+  instance_id = aws_instance.test-instance[count.index].id
+  state       = "running"
+}

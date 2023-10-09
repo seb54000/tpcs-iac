@@ -1,1 +1,6 @@
 tf-key*
+**/.terraform*
+**/terraform.tfstate*
+**/myplan
+
+config.txt

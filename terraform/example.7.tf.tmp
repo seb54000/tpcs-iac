@@ -1,0 +1,33 @@
+
+resource "aws_instance" "first-in-code" {
+  ami             = "ami-0a7899f097e6c2e90"
+  instance_type = "t2.small"
+
+  tags = {
+    Name = aws_instance.test-instance.id
+  }
+}
+
+resource "aws_instance" "test-instance" {
+  ami             = "ami-0a7899f097e6c2e90"
+  instance_type = "t2.small"
+
+  tags = {
+    Name = "my-vm"
+  }
+
+  # provisioner "file" {
+  #   source      = "config.txt"
+  #   destination = "/etc/config.txt"
+  # }
+
+  depends_on = [
+    null_resource.config_generator
+  ]
+}
+
+resource "null_resource" "config_generator" {
+  provisioner "local-exec" {
+    command = "echo 'myconfig' > config.txt"
+  }
+}

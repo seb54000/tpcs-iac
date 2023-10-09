@@ -1,0 +1,25 @@
+resource "aws_instance" "test-instance" {
+  count = var.instance_details.count
+
+  ami             = var.instance_details.image_id
+  instance_type   = "${var.instance_details.type}"
+
+  tags = {
+    Name = "my-test-vm-${count.index}"
+  }
+}
+
+variable "instance_details" {
+  type = list(object({
+    count = number
+    ami = string
+    type = string
+  }))
+  default = [
+    {
+      count = 2
+      ami = "ami-0a7899f097e6c2e90"
+      type = "t2.small"
+    }
+  ]
+}
