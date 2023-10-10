@@ -39,12 +39,6 @@ resource "aws_lb_listener" "lb_lst_front" {
 }
 
 
-# TODO : add jumphost to reach through SSH the VMs in private subnets - or use nginx frontend server for that
-# TODO add pirvate subnets in differnt zones to host LB private for API
-# Put instances API in different zones
-# Add a secgroup for vikunja API (port 3456) and also for the LoadBalancer
-# API LB should stay in public subnet in order to get the API calls
-
 resource "aws_lb" "lb_api" {
   name               = "lb-api"
   internal           = false

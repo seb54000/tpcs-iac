@@ -10,9 +10,15 @@ resource "aws_security_group" "internal_allow_all" {
     to_port   = 0
     protocol  = "-1"
 
+    # cidr_blocks = [
+    #   [for nets in 2 : "${var.aws_public_subnet_cidr_prefix}${nets},"],
+    #   [for nets in 2 : "${var.aws_private_subnet_cidr_prefix}${nets},"]
+    # ]
     cidr_blocks = [
-      var.aws_public_subnet_cidr,
-      var.aws_private_subnet_cidr
+      "${var.aws_public_subnet_cidr_prefix}0.0/24",
+      "${var.aws_public_subnet_cidr_prefix}1.0/24",
+      "${var.aws_private_subnet_cidr_prefix}0.0/24",
+      "${var.aws_private_subnet_cidr_prefix}1.0/24"
     ]
   }
 
@@ -101,7 +107,11 @@ resource "aws_security_group" "api_security_group" {
     from_port   = 3456
     to_port     = 3456
     protocol    = "TCP"
-    cidr_blocks = ["${var.aws_public_subnet_cidr}"]
+    cidr_blocks = [
+      "${var.aws_public_subnet_cidr_prefix}0.0/24",
+      "${var.aws_public_subnet_cidr_prefix}1.0/24"
+    ]
+    # cidr_blocks = [[for nets in 2 : "${var.aws_public_subnet_cidr_prefix}${nets},"]]
   }
   tags = {
     Name        = "api"
@@ -117,7 +127,11 @@ resource "aws_security_group" "mysql_security_group" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "TCP"
-    cidr_blocks = ["${var.aws_private_subnet_cidr}"]
+    cidr_blocks = [
+      "${var.aws_private_subnet_cidr_prefix}0.0/24",
+      "${var.aws_private_subnet_cidr_prefix}1.0/24"
+    ]
+    # cidr_blocks = [[for nets in 2 : "${var.aws_private_subnet_cidr_prefix}${nets},"]]
   }
   tags = {
     Name        = "mysql"

@@ -42,9 +42,9 @@ resource "aws_route_table" "internet" {
 }
 
 resource "aws_subnet" "public_subnet" {
-  count = 2  # needed for ALB
+  count = 2  # needed for ALB, at least 2 subents to balance traffic
 
-  cidr_block                      = format("10.1.%s.0/24",count.index) #var.aws_public_subnet_cidr
+  cidr_block                      = format("%s%s.0/24",var.aws_public_subnet_cidr_prefix, count.index)
   vpc_id                          = aws_vpc.vpc.id
   map_public_ip_on_launch         = true
 
@@ -56,15 +56,15 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
-  # count = 2
-  cidr_block                      = var.aws_private_subnet_cidr
+  count = 2
+  cidr_block                      = format("%s%s.0/24",var.aws_private_subnet_cidr_prefix, count.index)
   vpc_id                          = aws_vpc.vpc.id
-  # map_public_ip_on_launch         = true
+  map_public_ip_on_launch         = false
 
-  availability_zone = var.aws_zones[0]
+  availability_zone = var.aws_zones[count.index]
 
   tags = {
-    Name        = "tpiac-private-subnet"
+    Name        = "tpiac-private-subnet-${count.index}"
   }
 }
 
@@ -77,12 +77,12 @@ resource "aws_route_table_association" "public_routing_table" {
 
 
 resource "aws_eip" "nat_gateway" {
-  count = 2  # needed for ALB
+  count = 2
   domain = "vpc"
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  count = 2  # needed for ALB
+  count = 2
   allocation_id = aws_eip.nat_gateway[count.index].id
   subnet_id     = aws_subnet.public_subnet[count.index].id
 
@@ -96,7 +96,7 @@ resource "aws_nat_gateway" "nat_gw" {
 }
 
 resource "aws_route_table" "nat_gateway" {
-  count = 2  # needed for ALB  
+  count = 2  
   vpc_id = aws_vpc.vpc.id
 
   tags = {
@@ -120,8 +120,7 @@ resource "aws_route_table" "nat_gateway" {
 
 
 resource "aws_route_table_association" "nat_gateway_routing_table" {
-  subnet_id      = aws_subnet.private_subnet.id
-  route_table_id = aws_route_table.nat_gateway[0].id
+  count = 2
+  subnet_id      = aws_subnet.private_subnet[count.index].id
+  route_table_id = aws_route_table.nat_gateway[count.index].id
 }
-# TODO decide how to have multiple NAT gateway and route tables for redudancy
-# We may need to have 2 private subnets for API hosting and add another subnet dedicated to DataBase ?
