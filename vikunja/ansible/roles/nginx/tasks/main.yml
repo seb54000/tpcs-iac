@@ -8,9 +8,6 @@
     - nginx
     - unzip
 
-# TODO ensure nginx is install as systemd unit (this is done by default but...)
-# At least verify it is enabled
-
 - name: Ensure vikunja directory exists
   ansible.builtin.file:
     path: /app/vikunja
@@ -22,11 +19,6 @@
     src: "https://dl.vikunja.io/frontend/vikunja-frontend-{{ vikunja_front_version }}.zip"
     dest: /app/vikunja
     remote_src: yes
-
-# TODO : how to manage upgrades of Vikunja ?
-  # Fistr download the new version (but in such a case, you should detect that this is anew version, so you can remove existing files in the directory)
-  # Then you may decide to not to this in one shot but one webserver at a time
-  # You may have to relaod the nginx in this case
 
 - name: Modify index.html of vikunja to give the API_URL
   lineinfile:
@@ -44,11 +36,6 @@
     dest: "/app/vikunja/monitor.html"
     mode: 0666
   notify: Reload nginx
-
-# - name: remove
-#   file:
-#     path: /etc/nginx/sites-enabled/default
-#     state: absent
 
 - name: deploy nginx conf
   template:

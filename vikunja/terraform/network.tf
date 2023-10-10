@@ -7,8 +7,7 @@ resource "aws_vpc" "vpc" {
   assign_generated_ipv6_cidr_block = true
 
   tags = {
-    Name        = "${terraform.workspace}-vpc"
-    Environment = terraform.workspace
+    Name        = "tpiac-vpc"
   }
 }
 
@@ -16,8 +15,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "${terraform.workspace} internet gw terraform generated"
-    Environment = terraform.workspace
+    Name        = "internet gw terraform generated"
   }
 }
 
@@ -25,8 +23,7 @@ resource "aws_route_table" "internet" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "${terraform.workspace} Internet"
-    Environment = terraform.workspace
+    Name        = "Internet"
   }
 
   route {
@@ -54,8 +51,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = var.aws_zones[count.index]
 
   tags = {
-    Name        = format("${terraform.workspace}-public-subnet-%s", count.index)
-    Environment = terraform.workspace
+    Name        = format("tpiac-public-subnet-%s", count.index)
   }
 }
 
@@ -68,8 +64,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = var.aws_zones[0]
 
   tags = {
-    Name        = "${terraform.workspace}-private-subnet"
-    Environment = terraform.workspace
+    Name        = "tpiac-private-subnet"
   }
 }
 
@@ -105,8 +100,7 @@ resource "aws_route_table" "nat_gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "${terraform.workspace} nat_gateway"
-    Environment = terraform.workspace
+    Name        = "nat_gateway ${count.index}"
   }
 
   route {

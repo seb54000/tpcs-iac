@@ -9,7 +9,7 @@ resource "aws_lb" "lb_front" {
   # enable_deletion_protection = true
 
   tags = {
-    Environment = terraform.workspace
+    Name = "lb-front"
   }
 }
 
@@ -55,7 +55,7 @@ resource "aws_lb" "lb_api" {
   # enable_deletion_protection = true
 
   tags = {
-    Environment = terraform.workspace
+    Name = "lb-api"
   }
 }
 

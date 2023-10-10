@@ -39,8 +39,7 @@ resource "aws_security_group" "internal_allow_all" {
   }
 
   tags = {
-    Environment = terraform.workspace
-    Name        = "Internal allow all for ${terraform.workspace}"
+    Name        = "Internal allow all"
   }
 }
 
@@ -65,8 +64,7 @@ resource "aws_security_group" "ssh" {
   }
 
   tags = {
-    Environment = terraform.workspace
-    Name        = "Internal ssh for ${terraform.workspace}"
+    Name        = "Internal ssh for"
   }
 }
 
@@ -90,8 +88,7 @@ resource "aws_security_group" "https_http_security_group" {
   }
 
   tags = {
-    Environment = terraform.workspace
-    Name        = "http/https for ${terraform.workspace}"
+    Name        = "http/https"
   }
 }
 
@@ -107,8 +104,7 @@ resource "aws_security_group" "api_security_group" {
     cidr_blocks = ["${var.aws_public_subnet_cidr}"]
   }
   tags = {
-    Environment = terraform.workspace
-    Name        = "api for ${terraform.workspace}"
+    Name        = "api"
   }
 }
 
@@ -124,7 +120,6 @@ resource "aws_security_group" "mysql_security_group" {
     cidr_blocks = ["${var.aws_private_subnet_cidr}"]
   }
   tags = {
-    Environment = terraform.workspace
-    Name        = "mysql for ${terraform.workspace}"
+    Name        = "mysql"
   }
 }

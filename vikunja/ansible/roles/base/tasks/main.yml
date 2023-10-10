@@ -1,6 +1,0 @@
-- name: Setup sudoers
-  copy: src=SOURCEFILE.j2 dest=/etc/sudoers owner=root group=root mode=0440
-
-# - name: Update all packages to the latest version
-#   apt:
-#     upgrade: dist

@@ -1,25 +1,4 @@
 ---
-# - hosts: all
-#   become: true
-#   become_method: sudo
-#   become_user: root
-#   strategy: linear
-  # pre_tasks:
-  #   - name: Loading groups variables
-  #     no_log: false
-  #     include_vars:
-  #       file: "group_vars/all.yml"
-  #     ignore_errors: true
-  # roles:
-  #   - role: users
-  #     ops_users:
-  #       - name: YOURUSER
-  #         ssh_key_pub: PUBLIC_SSH_KEY
-  #       - name: ANOTHER_USER
-  #         ssh_key_pub: ANOTHER_PUBLIC_SSH_KEY
-  #   - role: base
-
-# - hosts: _Role_front
 - hosts: front
   become: true
   become_method: sudo
@@ -43,6 +22,4 @@
   strategy: linear
   roles:
     - role: api
-
-# TODO Question : why put api in last ? (because DB is needed for correct function of the API)
 

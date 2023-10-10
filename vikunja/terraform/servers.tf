@@ -1,11 +1,11 @@
 resource "aws_key_pair" "keypair" {
-  key_name = "sshkey-${terraform.workspace}"
+  key_name = "sshkey-tpiac"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC61q2nSLDaIVYF/OfR/x2iX/GobdBWKxkAdSoJH2+wnbApsDJFyjl4pDccxPYXPOSBZr6+ZG3Udg+dtHutYCEztNzpOeoUwIWHAmfjt13krkqg5EUpw3U2KLq+fu6Nuq5Sn82TVcMvB9htMS30Zm1zY1DJXmNsSO4lXeyubEvZUWIaKEKgK3UbF0p3w4LS8BzVNza7fHsw0NsGjjw+sYq1iC3SCRBnDsP93j2CZI3IUIN3+o5t2BPoFLD87zFIA6EpuvUixMZcwIg+VYQd4x//wINdzopixJQESjEdD15tmKiUAMwTMw5eugSWxmncTKAn2UpeA4vGe4RLDEQlD39oKZ7M7zfDwI+S+NT4MDWwZOkvsbdwXW8QPBdWgsEYViVV00VUB2JIZpt3BU9OQAbdqbU6obgqa87MOQ/O5b4g3lTpUw8yY9RHmZw6hbNObtDlCfUYskeNQEC2trEE5hposic/P7/GJH7TZqQ8CQfPXQ9EMLXBXlIVdDk7Q4eplas= CLAUDESbastienDG@CBDC-UBUNTU-008"
 }
 
 # # Use a local file for keypair (to avoid storing it in stateFile)
 # resource "aws_key_pair" "keypair" {
-#     key_name = "sshkey-${terraform.workspace}"
+#     key_name = "sshkey-tpiac"
 #     public_key   = var.ssh_key_public
 # }
 
@@ -27,8 +27,7 @@ resource "aws_instance" "front" {
   }
 
   tags = {
-    Name        = format("front%s-%s", count.index, terraform.workspace)
-    Environment = terraform.workspace
+    Name        = format("front%s", count.index)
     Role        = "front"
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name
@@ -53,8 +52,7 @@ resource "aws_instance" "api" {
   }
 
   tags = {
-    Name        = format("api%s-%s", count.index ,terraform.workspace)
-    Environment = terraform.workspace
+    Name        = format("api%s", count.index)
     Role        = "api"
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name
@@ -78,8 +76,7 @@ resource "aws_instance" "db" {
   }
 
   tags = {
-    Name        = format("db-%s", terraform.workspace)
-    Environment = terraform.workspace
+    Name        = "db"
     Role        = "db"
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name

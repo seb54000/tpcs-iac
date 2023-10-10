@@ -75,7 +75,8 @@
     - other_tag
 
 - name: Retry a task until a certain condition is met
-  ansible.builtin.shell: /usr/bin/foo
+  ansible.builtin.shell:
+    command: /usr/bin/foo
   register: result
   until: result.stdout.find("all systems go") != -1
   retries: 3
