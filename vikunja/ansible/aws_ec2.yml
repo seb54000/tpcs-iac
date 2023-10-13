@@ -18,12 +18,13 @@ hostnames:
   - tag:Name
 keyed_groups:
   - key: tags
+  # - key: tags['Role']
+  #   parent_group: "project"
 
 compose:
   ansible_host: private_ip_address
 
-groups:
-  #  https://docs.confluent.io/ansible/current/ansible-prepare.html
-  front: "'front' in tags.Role"
-  api: "'api' in tags.Role"
-  db: "'db' in tags.Role"
+# groups:
+#   front: "'front' in tags.Role"
+#   api: "'api' in tags.Role"
+#   db: "'db' in tags.Role"
