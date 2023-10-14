@@ -106,7 +106,8 @@ resource "aws_security_group" "api_security_group" {
     protocol    = "TCP"
     cidr_blocks = [
       "${var.aws_public_subnet_cidr_prefix}0.0/24",
-      "${var.aws_public_subnet_cidr_prefix}1.0/24"
+      "${var.aws_public_subnet_cidr_prefix}1.0/24",
+      "0.0.0.0/0" # Required as External client connects directly to the LB, could be improved 
     ]
   }
   tags = {
