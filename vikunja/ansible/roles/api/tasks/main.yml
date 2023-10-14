@@ -1,0 +1,43 @@
+
+- name: Install unzip
+  apt:
+    name: unzip
+    state: latest
+    update_cache: true
+
+- name: Ensure vikunja directory exists
+  ansible.builtin.file:
+    path: /app/vikunja
+    state: directory
+    mode: '0755'
+
+- name: Download Vikunja api
+  ansible.builtin.unarchive:
+    src: "https://dl.vikunja.io/api/{{ vikunja_api_version }}/vikunja-v{{ vikunja_api_version }}-linux-amd64-full.zip"
+    dest: /app/vikunja
+    remote_src: yes
+
+- name: deploy config file for vikunja API
+  template:
+    src: "config.yml.j2"
+    dest: "/app/vikunja/config.yml"
+    mode: 0644
+
+- name: deploy systemd service unit for api
+  template:
+    src: "systemd.j2"
+    dest: "/etc/systemd/system/vikunja.service"
+    mode: 0755
+
+- name: "Force systemd to reread configs"
+  systemd:
+    daemon_reload: true
+
+- name: "Start and Enable (always started after reboot) service vikunja"
+  service:
+    name: "vikunja"
+    enabled: true
+    state: "started"
+
+- name: restart api
+  command: systemctl restart vikunja

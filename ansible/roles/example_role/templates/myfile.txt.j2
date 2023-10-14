@@ -1,0 +1,14 @@
+Simple jinja example
+
+{% if myinclude is defined %}
+    This should appear only on group1 hosts
+    {{ myinclude }}
+{% endif %}
+
+This will appear on all hosts
+{{ role_var }}
+
+Example of a loop in jinja
+{% for host in groups['servers'] %}
+  {{ host }} : {{ hostvars[host].ansible_hostname }} : {{ hostvars[host].ansible_default_ipv4.address }}
+{% endfor %}

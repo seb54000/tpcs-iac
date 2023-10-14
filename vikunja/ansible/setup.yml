@@ -1,0 +1,28 @@
+---
+# - hosts: front
+- hosts: _Role_front
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: nginx
+
+# - hosts: db
+- hosts: _Role_db
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: mysql
+
+# - hosts: api
+- hosts: _Role_api
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: api
+

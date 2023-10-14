@@ -1,0 +1,58 @@
+---
+- name: Install nginx and unzip
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: true
+  loop:
+    - nginx
+    - unzip
+
+- name: Ensure vikunja directory exists
+  ansible.builtin.file:
+    path: /app/vikunja
+    state: directory
+    mode: '0755'
+
+- name: Download Vikunja frontend
+  ansible.builtin.unarchive:
+    src: "https://dl.vikunja.io/frontend/vikunja-frontend-{{ vikunja_front_version }}.zip"
+    dest: /app/vikunja
+    remote_src: yes
+
+- name: Modify index.html of vikunja to give the API_URL
+  lineinfile:
+    path: /app/vikunja/index.html
+    regexp: '(window.API_URL)'
+    line: "        window.API_URL = \"http://{{ hostvars[inventory_hostname].tags.api_lb_dns }}:3456/api/v1\""
+    backrefs: yes
+    firstmatch: yes
+    state: present
+    backup: yes
+
+- name: deploy custom monitor.html
+  template:
+    src: "monitor.html.j2"
+    dest: "/app/vikunja/monitor.html"
+    mode: 0666
+  notify: Reload nginx
+
+- name: deploy nginx conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-enabled/default"
+    mode: 0666
+  notify: Reload nginx
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  ansible.builtin.meta: flush_handlers
+
+- name: Test file monitor
+  ansible.builtin.uri:
+    url: "http://{{ hostvars[inventory_hostname].tags.front_lb_dns }}/monitor.html" 
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 5
+  delay: 1

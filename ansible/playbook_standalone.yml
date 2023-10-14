@@ -1,0 +1,21 @@
+---
+- hosts: all
+  tasks:
+    - name: print simple var
+      debug:
+        msg: "Hostname is : {{ ansible_hostname }}, all var is : {{ all_var }}"
+
+    - name: Is user johnd here ?
+      shell:
+        cmd: grep johnd /etc/passwd
+      failed_when: false
+
+    - name: create a new user
+      become: true
+      ansible.builtin.user:
+        name: johnd
+        comment: John Doe
+        uid: 1040
+        group: admin
+        # state: absent
+...

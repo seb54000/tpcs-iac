@@ -1,0 +1,9 @@
+database:
+    type: mysql
+    user: "{{ database_name }}"
+    password: "{{ database_name }}"
+    host: "{{ hostvars[inventory_hostname].tags.db_ip }}" 
+    database: "{{ database_name }}"
+service:
+    JWTSecret: "aSuperSecretJWTforMultiInstancesSharingAPIofVikunja"
+    # If not specified, we cannot have multi API instances : https://vikunja.io/docs/config-options/#jwtsecret

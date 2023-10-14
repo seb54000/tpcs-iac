@@ -1,0 +1,93 @@
+
+- name: print var first
+  debug:
+    msg: "group1 : {{ group1_var }} - role : {{ role_var }}"
+
+- name: create user foo (or ensure it exists)
+  become: true
+  ansible.builtin.user:
+    name: foo
+    state: present
+  register: user_creation
+
+- name: Print a message only if user didn't exists before
+  debug:
+    msg: "user foo has just been created"
+  when: user_creation.changed
+
+- name: copy a local file to remote hosts
+  ansible.builtin.copy:
+    src: testfile
+    dest: /var/tmp/mytestfile.txt
+    mode: '0644'
+
+- name: print content of file to verify it is there
+  shell:
+    cmd: ls -l /var/tmp/mytestfile.txt && cat /var/tmp/mytestfile.txt
+
+- name: define variable (set_fact) only for group1 hosts
+  set_fact:
+    myinclude: group1
+  when: group1_var == "group1.yml"
+
+- name: template a file to remote hosts (illustrate jinja)
+  become: true
+  ansible.builtin.template:
+    src: myfile.txt.j2
+    dest: /var/tmp/mytesttemplate.txt
+    owner: foo
+    mode: '0666'
+
+- name: print content of template result file to verify
+  shell:
+    cmd: ls -l /var/tmp/mytesttemplate.txt && cat /var/tmp/mytesttemplate.txt
+
+- name: Modify with lineinfile existing file
+  lineinfile:
+    path: /var/tmp/mytestfile.txt
+    regexp: '(placeholder)'
+    line: '##### \1 MODIFIED !!'
+    backrefs: yes
+    firstmatch: yes
+    state: present
+    backup: yes
+
+- name: print content of file to verify lineinfile behavior
+  shell:
+    cmd: ls -l /var/tmp/mytestfile.txt* && cat /var/tmp/mytestfile.txt
+
+- name: Using loop on a task (and run once only)
+  run_once: true
+  debug:
+    msg: "This is user {{ item.name }} with key {{ item.ssh_key_pub }}"
+  with_items: "{{ example_var_list }}"
+
+- name: Delegate task to a host
+  shell:
+    cmd: hostname
+  delegate_to: "{{ groups['group1'] | first }}"
+
+- name: tag illustration with a simple debug
+  debug:
+    msg: "This task has a tag test_tag"
+  tags:
+    - test_tag
+    - other_tag
+
+- name: Retry a task until a certain condition is met
+  ansible.builtin.shell:
+    command: /usr/bin/foo
+  register: result
+  until: result.stdout.find("all systems go") != -1
+  retries: 3
+  delay: 1
+  ignore_errors : true
+
+- name: Include task list
+  include_tasks: group1.yml
+
+# Actually buggy
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_tasks_module.html
+# - name: Include task list in play only if the condition is true
+#   ansible.builtin.include_tasks: "{{ myinclude }}.yml"
+#   when: myinclude is defined
