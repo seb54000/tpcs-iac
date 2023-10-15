@@ -14,6 +14,9 @@ ansible-playbook -i aws_ec2.yml setup.yml
 
     --start-at-task="deploy nginx conf"
 
+IP=$(ansible-inventory -i aws_ec2.yml --host front1 | jq -r '.public_ip_address')
+sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/${IP}/g" ssh-config
+
 ssh -v -i tp-iac -J ubuntu@35.180.33.147 ubuntu@35.180.17.44
 
 ssh -F ssh-config 35.180.172.168
