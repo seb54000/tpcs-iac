@@ -1,10 +1,11 @@
 # Setup environment and simple ansible tests
 
 ``` bash
+sudo apt install -y python3.10-venv
 python3 -m venv ansiblevenv
 source ansiblevenv/bin/activate
-# pip install ansible boto3 botocore
-pip install -r requirements.txt
+pip install ansible boto3 botocore
+# pip install -r requirements.txt
 ansible-galaxy collection install community.mysql
 ```
 
