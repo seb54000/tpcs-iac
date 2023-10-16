@@ -43,6 +43,7 @@ resource "aws_security_group" "internal_allow_all" {
 
   tags = {
     Name        = "Internal allow all"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -68,6 +69,7 @@ resource "aws_security_group" "ssh" {
 
   tags = {
     Name        = "Internal ssh for"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -92,6 +94,7 @@ resource "aws_security_group" "https_http_security_group" {
 
   tags = {
     Name        = "http/https"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -112,6 +115,7 @@ resource "aws_security_group" "api_security_group" {
   }
   tags = {
     Name        = "api"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -131,5 +135,6 @@ resource "aws_security_group" "mysql_security_group" {
   }
   tags = {
     Name        = "mysql"
+    filter = chomp(file("/etc/hostname"))
   }
 }

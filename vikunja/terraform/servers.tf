@@ -3,6 +3,10 @@
 resource "aws_key_pair" "keypair" {
     key_name = "sshkey-tpiac"
     public_key   = var.ssh_key_public
+  tags = {
+    Name        = "keypair-tpiac"
+    filter = chomp(file("/etc/hostname"))
+  }    
 }
 
 resource "aws_instance" "front" {
@@ -27,6 +31,7 @@ resource "aws_instance" "front" {
     Role        = "front"
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -53,6 +58,7 @@ resource "aws_instance" "api" {
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name
     db_ip       = aws_instance.db.private_ip
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -76,6 +82,7 @@ resource "aws_instance" "db" {
     Role        = "db"
     api_lb_dns  = aws_lb.lb_api.dns_name
     front_lb_dns  = aws_lb.lb_front.dns_name
+    filter = chomp(file("/etc/hostname"))
   }
 }
 

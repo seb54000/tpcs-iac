@@ -12,6 +12,7 @@ resource "aws_instance" "test-instance" {
 
   tags = {
     Name = "my-vm-${count.index}"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 

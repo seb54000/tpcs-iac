@@ -5,6 +5,7 @@ resource "aws_instance" "first-in-code" {
 
   tags = {
     Name = aws_instance.test-instance.id
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -14,6 +15,7 @@ resource "aws_instance" "test-instance" {
 
   tags = {
     Name = "my-vm"
+    filter = chomp(file("/etc/hostname"))
   }
 
   # provisioner "file" {

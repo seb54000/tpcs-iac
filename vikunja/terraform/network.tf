@@ -8,6 +8,7 @@ resource "aws_vpc" "vpc" {
 
   tags = {
     Name        = "tpiac-vpc"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -16,6 +17,7 @@ resource "aws_internet_gateway" "gw" {
 
   tags = {
     Name        = "internet gw terraform generated"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -24,6 +26,7 @@ resource "aws_route_table" "internet" {
 
   tags = {
     Name        = "Internet"
+    filter = chomp(file("/etc/hostname"))
   }
 
   route {
@@ -52,6 +55,7 @@ resource "aws_subnet" "public_subnet" {
 
   tags = {
     Name        = format("tpiac-public-subnet-%s", count.index)
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -65,6 +69,7 @@ resource "aws_subnet" "private_subnet" {
 
   tags = {
     Name        = "tpiac-private-subnet-${count.index}"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -79,6 +84,10 @@ resource "aws_route_table_association" "public_routing_table" {
 resource "aws_eip" "nat_gateway" {
   count = 2
   domain = "vpc"
+  tags = {
+    Name        = "eip-natgw-${count.index}"
+    filter = chomp(file("/etc/hostname"))
+  }  
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -88,6 +97,7 @@ resource "aws_nat_gateway" "nat_gw" {
 
   tags = {
     Name = "gw NAT"
+    filter = chomp(file("/etc/hostname"))
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -101,6 +111,7 @@ resource "aws_route_table" "nat_gateway" {
 
   tags = {
     Name        = "nat_gateway ${count.index}"
+    filter = chomp(file("/etc/hostname"))
   }
 
   route {

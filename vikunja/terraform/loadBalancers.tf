@@ -10,6 +10,7 @@ resource "aws_lb" "lb_front" {
 
   tags = {
     Name = "lb-front"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -18,6 +19,11 @@ resource "aws_lb_target_group" "lb_tg_front" {
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
+
+  tags = {
+    Name = "lb-front"
+    filter = chomp(file("/etc/hostname"))
+  }
 }
 
 resource "aws_lb_target_group_attachment" "lb_tga_front" {
@@ -36,6 +42,10 @@ resource "aws_lb_listener" "lb_lst_front" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.lb_tg_front.arn
   }
+  tags = {
+    Name = "lb-front"
+    filter = chomp(file("/etc/hostname"))
+  }  
 }
 
 
@@ -50,6 +60,7 @@ resource "aws_lb" "lb_api" {
 
   tags = {
     Name = "lb-api"
+    filter = chomp(file("/etc/hostname"))
   }
 }
 
@@ -58,6 +69,11 @@ resource "aws_lb_target_group" "lb_tg_api" {
   port        = 3456
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
+
+  tags = {
+    Name = "lb-api"
+    filter = chomp(file("/etc/hostname"))
+  }  
 }
 
 resource "aws_lb_target_group_attachment" "lb_tga_api" {
@@ -76,4 +92,8 @@ resource "aws_lb_listener" "lb_lst_api" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.lb_tg_api.arn
   }
+  tags = {
+    Name = "lb-api"
+    filter = chomp(file("/etc/hostname"))
+  }  
 }
