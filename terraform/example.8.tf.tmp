@@ -19,8 +19,8 @@ resource "aws_instance" "ansible_instance" {
 }
 
 resource "aws_security_group" "ansible_test" {
-  name        = "ansible_test"
-  description = "ansible_test"
+  name        = "ansible_test-${chomp(file("/etc/hostname"))}"
+  description = "ansible_test-${chomp(file("/etc/hostname"))}"
   ingress {
     from_port   = 22
     to_port     = 22
@@ -28,7 +28,7 @@ resource "aws_security_group" "ansible_test" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name        = "ansible_test"
+    Name        = "ansible_test-${chomp(file("/etc/hostname"))}"
     filter = chomp(file("/etc/hostname"))
   }
 }
