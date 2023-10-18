@@ -2,16 +2,25 @@
 - hosts: all
   tasks:
     - name: print simple var
+      # debug is a module to print information and variables values on the ansible output during execution
+      # ansible has no print or echo function, we need to use debug module 
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
       debug:
         msg: "Hostname is : {{ ansible_hostname }}, all var is : {{ all_var }}"
 
     - name: Is user johnd here ?
+      # Execute any shell command on the target host
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html
       shell:
         cmd: grep johnd /etc/passwd
       failed_when: false
 
     - name: create a new user
       become: true
+      # Create / remove and manage user accounts at the OS level
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+      # Note that we prefix the module with ansible.builtin (debug and shell module are also builtin in default ansible install, so prefix is not required)
+      # Still it is a good practice to give the full name of the module in order to avoid conflicts with other module named user that you could import from ansible-galaxy
       ansible.builtin.user:
         name: johnd
         comment: John Doe
