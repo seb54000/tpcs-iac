@@ -1,0 +1,19 @@
+ansible localhost -a 'uptime'
+ansible localhost -m shell -a 'ls -l'
+ansible all -i "15.236.186.186," -u ubuntu -m shell -a 'uptime' -e ansible_ssh_private_key_file=./tf-key
+ansible all -i inventory -m shell -a 'uptime' 
+ansible group1 -i inventory -m shell -a 'uptime' 
+ansible-inventory -i inventory --graph
+ansible-inventory -i inventory --host <hostname ou IP du host dans l’inventaire>
+ansible group1 -i inventory -m debug -a "var=ansible_user"
+ansible group1 -i inventory -m debug -a "var=groups"
+ansible all -i inventory -m debug -a "msg='{{ all_var }} {{ group1_var }}'"
+ansible all -i inventory -m debug -a "msg='{{ my_var }} {{ all_var }} {{ group1_var }}'" -e all_var=myvalue
+ansible group1 -i inventory -m setup 
+ansible-doc -l
+ansible-doc setup
+ansible-doc debug
+ansible-playbook -i inventory playbook_standalone.yml -v
+ansible-playbook -i inventory playbook_with_role.yml -v
+ansible-playbook -i inventory playbook_with_role.yml --tags test_tag
+ansible-playbook -i inventory playbook_with_role.yml --skip-tags test_tag
