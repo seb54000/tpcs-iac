@@ -11,16 +11,14 @@ resource "aws_instance" "test-instance" {
 }
 
 variable "instance_details" {
-  type = list(object({
+  type = object({
     count = number
-    ami = string
+    image_id = string
     type = string
-  }))
-  default = [
-    {
+  })
+  default = {
       count = 2
-      ami = "ami-0a7899f097e6c2e90"
+      image_id = "ami-0a7899f097e6c2e90"
       type = "t2.small"
     }
-  ]
 }

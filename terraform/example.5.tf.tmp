@@ -9,5 +9,6 @@ resource "aws_instance" "test-instance" {
 
   tags = {
     Name = data.aws_vpc.default.id
+    filter = chomp(file("/etc/hostname"))
   }
 }
