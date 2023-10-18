@@ -1,2 +1,2 @@
-role_var: "role.yml"
-group1_var: "role.yml"
+role_var: "value from mail.yml file inexample_role dir"
+group1_var: "value from mail.yml file inexample_role dir"

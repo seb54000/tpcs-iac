@@ -1,2 +1,2 @@
-all_var: "all.yml"
-group1_var: all.yml
+all_var: "value from all.yml file"
+group1_var: "value from all.yml file"
