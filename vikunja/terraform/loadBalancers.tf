@@ -1,6 +1,6 @@
 
 resource "aws_lb" "lb_front" {
-  name               = "lb-front"
+  name               = "lb-front-${chomp(file("/etc/hostname"))}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.https_http_security_group.id, aws_security_group.internal_allow_all.id]
@@ -50,7 +50,7 @@ resource "aws_lb_listener" "lb_lst_front" {
 
 
 resource "aws_lb" "lb_api" {
-  name               = "lb-api"
+  name               = "lb-api-${chomp(file("/etc/hostname"))}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.https_http_security_group.id, aws_security_group.internal_allow_all.id, aws_security_group.api_security_group.id]

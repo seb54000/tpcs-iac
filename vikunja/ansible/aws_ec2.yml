@@ -14,6 +14,9 @@ regions:
 #     - qa
 #   instance.group-id: sg-xxxxxxxx
 
+filters:
+  tag:filter: tpiac00
+
 hostnames:
   - tag:Name
 keyed_groups:
