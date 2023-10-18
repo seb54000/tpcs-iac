@@ -15,7 +15,7 @@ resource "aws_lb" "lb_front" {
 }
 
 resource "aws_lb_target_group" "lb_tg_front" {
-  name        = "lb-tg-front"
+  name        = "lb-tg-front-${chomp(file("/etc/hostname"))}"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
@@ -65,7 +65,7 @@ resource "aws_lb" "lb_api" {
 }
 
 resource "aws_lb_target_group" "lb_tg_api" {
-  name        = "lb-tg-api"
+  name        = "lb-tg-api-${chomp(file("/etc/hostname"))}"
   port        = 3456
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id

@@ -1,10 +1,10 @@
 
 # Use a local file for keypair (to avoid storing it in stateFile)
 resource "aws_key_pair" "keypair" {
-    key_name = "sshkey-tpiac"
+    key_name = "sshkey-tpiac-vikunja-${chomp(file("/etc/hostname"))}"
     public_key   = var.ssh_key_public
   tags = {
-    Name        = "keypair-tpiac"
+    Name        = "keypair-tpiac-vikunja-${chomp(file("/etc/hostname"))}"
     filter = chomp(file("/etc/hostname"))
   }    
 }
