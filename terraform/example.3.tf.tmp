@@ -17,7 +17,7 @@ variable "instance_count" {
 variable "ami" {
   type = string
   description = "AMI reference ID"
-  default = "ami-0a7899f097e6c2e90"
+  default = "<AMI-ID-for-your-region>"
 }
 variable "type" {
   type = string
