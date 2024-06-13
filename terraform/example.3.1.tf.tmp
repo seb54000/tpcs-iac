@@ -19,6 +19,6 @@ variable "instance_details" {
   default = {
       count = 2
       image_id = "ami-0a7899f097e6c2e90"
-      type = "t2.small"
+      type = "t3.small"
     }
 }
