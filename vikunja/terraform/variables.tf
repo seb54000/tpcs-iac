@@ -1,6 +1,3 @@
-variable "aws_region" {
-  default = "eu-west-3"
-}
 
 variable "aws_network_cidr" {
   default = "0.0.0.0/0"
