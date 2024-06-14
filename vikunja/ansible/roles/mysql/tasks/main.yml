@@ -68,3 +68,10 @@
     login_user: root
     login_password: "{{ mysql_root_password }}"
   loop: "{{ groups['_Role_api'] }}"
+
+# Needed with Noble
+- name: restart mysql service
+  ansible.builtin.systemd_service:
+    state: restarted
+    enabled: true
+    name: "mysql"
