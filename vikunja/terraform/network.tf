@@ -51,7 +51,7 @@ resource "aws_subnet" "public_subnet" {
   vpc_id                          = aws_vpc.vpc.id
   map_public_ip_on_launch         = true
 
-  availability_zone = var.aws_zones[count.index]
+  availability_zone = var.vikunja_aws_zones[count.index]
 
   tags = {
     Name        = format("tpiac-public-subnet-%s", count.index)
@@ -65,7 +65,7 @@ resource "aws_subnet" "private_subnet" {
   vpc_id                          = aws_vpc.vpc.id
   map_public_ip_on_launch         = false
 
-  availability_zone = var.aws_zones[count.index]
+  availability_zone = var.vikunja_aws_zones[count.index]
 
   tags = {
     Name        = "tpiac-private-subnet-${count.index}"

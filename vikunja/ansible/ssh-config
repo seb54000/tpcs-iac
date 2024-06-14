@@ -5,4 +5,4 @@ Host *
       StrictHostKeyChecking no
       LogLevel ERROR
       UserKnownHostsFile /dev/null      
-      IdentityFile ~/tp-centralesupelec-iac/vikunja/terraform/tp-iac
+      IdentityFile ~/tpcs-iac/vikunja/terraform/tp-iac

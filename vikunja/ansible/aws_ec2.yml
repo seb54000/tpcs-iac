@@ -15,7 +15,7 @@ regions:
 #   instance.group-id: sg-xxxxxxxx
 
 filters:
-  tag:filter: tpiac00
+  tag:filter: vm00
 
 hostnames:
   - tag:Name

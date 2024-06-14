@@ -11,9 +11,8 @@ variable "aws_private_subnet_cidr_prefix" {
   type = string
 }
 
-variable "aws_zones" {
+variable "vikunja_aws_zones" {
   type = list(string)
-  default = ["eu-west-3a","eu-west-3b","eu-west-3c"]
 }
 
 variable "ubuntu_ami" {
