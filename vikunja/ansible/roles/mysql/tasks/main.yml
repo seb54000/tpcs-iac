@@ -20,12 +20,14 @@
   loop:
     - python3-pip
     - python3-dev
+    - python3-pymysql # From ubuntu noble 24.04
 
-- name: Make sure pymysql is present
-  pip:
-    name: pymysql
-    state: present
-    executable: /usr/bin/pip3
+# History : was working with Jammy 22.04
+# - name: Make sure pymysql is present
+#   pip:
+#     name: pymysql
+#     state: present
+#     executable: /usr/bin/pip3
 
 - name: Sets the root password
   mysql_user:
