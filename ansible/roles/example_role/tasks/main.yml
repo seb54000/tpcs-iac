@@ -28,7 +28,7 @@
 - name: define variable (set_fact) only for group1 hosts
   set_fact:
     myinclude: group1
-  when: group1_var == "group1.yml"
+  when: inventory_hostname in groups[group1]
 
 - name: template a file to remote hosts (illustrate jinja)
   become: true
@@ -60,7 +60,7 @@
   run_once: true
   debug:
     msg: "This is user {{ item.name }} with key {{ item.ssh_key_pub }}"
-  with_items: "{{ example_var_list }}"
+  loop: "{{ example_var_list }}"
 
 - name: Delegate task to a host
   shell:
