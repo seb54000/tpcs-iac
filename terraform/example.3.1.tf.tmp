@@ -22,3 +22,6 @@ variable "instance_details" {
       type = "t3.small"
     }
 }
+
+# Example how to pass this kind of var in command line
+# terraform apply -var 'instance_details={"count"="3","image_id"="ami-05d9d500849d3fece","type"="t2.small"}'
