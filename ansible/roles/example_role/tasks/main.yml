@@ -28,7 +28,7 @@
 - name: define variable (set_fact) only for group1 hosts
   set_fact:
     myinclude: group1
-  when: inventory_hostname in groups[group1]
+  when: inventory_hostname in groups['group1']
 
 - name: template a file to remote hosts (illustrate jinja)
   become: true
