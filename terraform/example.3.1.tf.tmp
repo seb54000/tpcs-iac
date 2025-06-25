@@ -19,9 +19,9 @@ variable "instance_details" {
   default = {
       count = 2
       image_id = "<AMI-ID-for-your-region>"
-      type = "t3.small"
+      type = "t3.micro"
     }
 }
 
 # Example how to pass this kind of var in command line
-# terraform apply -var 'instance_details={"count"="3","image_id"="ami-05d9d500849d3fece","type"="t3.small"}'
+# terraform apply -var 'instance_details={"count"="3","image_id"="ami-05d9d500849d3fece","type"="t3.micro"}'
