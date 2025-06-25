@@ -6,7 +6,7 @@ resource "aws_key_pair" "keypair" {
   tags = {
     Name        = "keypair-tpiac-vikunja-${chomp(file("/etc/hostname"))}"
     filter = chomp(file("/etc/hostname"))
-  }    
+  }
 }
 
 resource "aws_instance" "front" {
@@ -14,7 +14,7 @@ resource "aws_instance" "front" {
 
   ami                    = var.ubuntu_ami
   subnet_id              = aws_subnet.public_subnet[count.index].id
-  instance_type          = "t3.medium"
+  instance_type          = "t3.small"
   vpc_security_group_ids =  [
                               aws_security_group.internal_allow_all.id,
                               aws_security_group.https_http_security_group.id,
