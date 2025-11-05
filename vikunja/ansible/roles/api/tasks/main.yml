@@ -13,7 +13,7 @@
 
 - name: Download Vikunja api
   ansible.builtin.unarchive:
-    src: "https://dl.vikunja.io/api/{{ vikunja_api_version }}/vikunja-v{{ vikunja_api_version }}-linux-amd64-full.zip"
+    src: "https://dl.vikunja.io/vikunja/{{ vikunja_api_version }}/vikunja-v{{ vikunja_api_version }}-linux-amd64-full.zip"
     dest: /app/vikunja
     remote_src: yes
 

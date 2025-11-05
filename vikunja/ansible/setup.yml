@@ -1,12 +1,12 @@
 ---
-# - hosts: front
-- hosts: _Role_front
-  become: true
-  become_method: sudo
-  become_user: root
-  strategy: linear
-  roles:
-    - role: nginx
+# # - hosts: front
+# - hosts: _Role_front
+#   become: true
+#   become_method: sudo
+#   become_user: root
+#   strategy: linear
+#   roles:
+#     - role: nginx
 
 # - hosts: db
 - hosts: _Role_db
