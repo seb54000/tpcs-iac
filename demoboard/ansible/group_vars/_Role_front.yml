@@ -1,0 +1,4 @@
+---
+welcome_msg: "This is a demoboard frontend server"
+frontend_build_api_url: /api
+frontend_enable_worker: "{{ demoboard_enable_worker }}"

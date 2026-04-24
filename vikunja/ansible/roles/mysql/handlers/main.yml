@@ -1,4 +1,0 @@
----
-- name: Restart mysql
-  listen:  Restart mysql
-  command: sudo service mysql restart

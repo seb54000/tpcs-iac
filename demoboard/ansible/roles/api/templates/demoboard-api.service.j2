@@ -1,0 +1,19 @@
+[Unit]
+Description=Demoboard API
+After=network.target postgresql.service redis-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ app_root }}/api-service
+EnvironmentFile={{ app_env_dir }}/api.env
+ExecStart={{ app_root }}/api-service/.venv/bin/uvicorn app:app --host {{ api_listen_host }} --port {{ api_listen_port }}
+Restart=always
+RestartSec=3
+StandardOutput=append:{{ api_log_file }}
+StandardError=append:{{ api_log_file }}
+
+[Install]
+WantedBy=multi-user.target

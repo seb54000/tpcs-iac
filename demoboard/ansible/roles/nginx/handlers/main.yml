@@ -1,0 +1,22 @@
+---
+- name: Build and install frontend
+  become_user: "{{ app_user }}"
+  ansible.builtin.command:
+    cmd: npm run build
+    chdir: "{{ app_root }}/frontend-service"
+  environment:
+    VITE_API_URL: "{{ frontend_build_api_url }}"
+    VITE_ENABLE_WORKER: "{{ frontend_enable_worker | ternary('true', 'false') }}"
+  listen: Build and install frontend
+  notify: Sync frontend dist
+
+- name: Sync frontend dist
+  ansible.builtin.command:
+    cmd: rsync -a --delete {{ app_root }}/frontend-service/dist/ {{ app_front_root }}/
+  listen: Sync frontend dist
+  notify: Reload nginx
+
+- name: Reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

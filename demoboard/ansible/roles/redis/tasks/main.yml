@@ -1,0 +1,26 @@
+---
+- name: Install redis-server
+  ansible.builtin.apt:
+    name: redis-server
+    state: present
+    update_cache: true
+
+- name: Configure Redis bind address
+  ansible.builtin.lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: "^bind "
+    line: "bind 0.0.0.0 ::0"
+  notify: Restart redis
+
+- name: Disable Redis protected mode inside private subnet
+  ansible.builtin.lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: "^protected-mode "
+    line: "protected-mode no"
+  notify: Restart redis
+
+- name: Ensure Redis service is enabled and started
+  ansible.builtin.service:
+    name: redis-server
+    enabled: true
+    state: started

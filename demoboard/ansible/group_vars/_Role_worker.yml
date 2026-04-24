@@ -1,0 +1,6 @@
+---
+worker_log_file: "{{ app_log_dir }}/worker-service.log"
+worker_processing_time_min_seconds: 1.5
+worker_processing_time_max_seconds: 2.7
+degraded_worker_processing_time_min_seconds: 3.5
+degraded_worker_processing_time_max_seconds: 6.0

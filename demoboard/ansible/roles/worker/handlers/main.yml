@@ -1,0 +1,5 @@
+---
+- name: Restart demoboard worker
+  ansible.builtin.service:
+    name: demoboard-worker
+    state: restarted
