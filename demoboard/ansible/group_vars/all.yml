@@ -14,15 +14,15 @@ demoboard_project_src: "{{ lookup('env', 'HOME') }}/tpcs-iac/demoboard/ansible/d
 database_name: tasks
 database_user: demoboard
 database_password: demoboard
-database_host: "{{ hostvars[groups['_Role_db'][0]].private_dns_name }}"
+database_host: "{{ hostvars[groups['_Role_db'][0]].aws_private_dns_name }}"
 database_port: 5432
 
-redis_host: "{{ hostvars[groups['_Role_redis'][0]].private_dns_name }}"
+redis_host: "{{ hostvars[groups['_Role_redis'][0]].aws_private_dns_name }}"
 redis_port: 6379
 redis_queue: jobs
 
 demoboard_enable_worker: true
-demoboard_node_zone: "{{ hostvars[inventory_hostname].placement.availability_zone | default('') }}"
+demoboard_node_zone: "{{ hostvars[inventory_hostname].aws_placement.availability_zone | default('') }}"
 demoboard_degraded_node_zone_match: eu-west-3c
 
 demoboard_otel_enabled: false

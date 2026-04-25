@@ -2,6 +2,7 @@
 - name: Install PostgreSQL packages
   ansible.builtin.apt:
     name:
+      - acl
       - postgresql
       - postgresql-contrib
       - python3-psycopg2
@@ -21,7 +22,7 @@
     marker: "# {mark} ANSIBLE DEMOBOARD"
     block: |
       {% for host in groups['_Role_api'] + groups['_Role_worker'] %}
-      host    {{ database_name }}    {{ database_user }}    {{ hostvars[host].private_ip_address }}/32    md5
+      host    {{ database_name }}    {{ database_user }}    {{ hostvars[host].aws_private_ip_address }}/32    md5
       {% endfor %}
   notify: Restart postgresql
 

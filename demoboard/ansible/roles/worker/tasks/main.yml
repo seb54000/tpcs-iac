@@ -42,6 +42,7 @@
     dest: "{{ app_root }}/worker-service/"
     delete: true
     recursive: true
+    use_ssh_args: true
     rsync_opts:
       - "--exclude=__pycache__"
       - "--exclude=.venv"

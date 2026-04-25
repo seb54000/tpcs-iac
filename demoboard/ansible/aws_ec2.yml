@@ -3,6 +3,7 @@
 
 
 plugin: amazon.aws.aws_ec2
+hostvars_prefix: aws_
 regions:
   - eu-west-3
 # filters:
@@ -20,14 +21,14 @@ filters:
 hostnames:
   - tag:Name
 keyed_groups:
-  - key: tags
-  # - key: tags['Role']
+  - key: aws_tags
+  # - key: aws_tags['Role']
   #   parent_group: "project"
 
 compose:
-  ansible_host: private_ip_address
+  ansible_host: aws_private_ip_address
 
 # groups:
-#   front: "'front' in tags.Role"
-#   api: "'api' in tags.Role"
-#   db: "'db' in tags.Role"
+#   front: "'front' in aws_tags.Role"
+#   api: "'api' in aws_tags.Role"
+#   db: "'db' in aws_tags.Role"
