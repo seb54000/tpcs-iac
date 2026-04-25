@@ -112,8 +112,6 @@ resource "aws_instance" "db" {
     Role         = "db"
     api_lb_dns   = aws_lb.lb_api.dns_name
     front_lb_dns = aws_lb.lb_front.dns_name
-    db_host      = aws_instance.db.private_dns
-    redis_host   = aws_instance.redis.private_dns
     filter       = chomp(file("/etc/hostname"))
   }
 }
@@ -138,9 +136,6 @@ resource "aws_instance" "redis" {
     Role         = "redis"
     api_lb_dns   = aws_lb.lb_api.dns_name
     front_lb_dns = aws_lb.lb_front.dns_name
-    db_host      = aws_instance.db.private_dns
-    redis_host   = aws_instance.redis.private_dns
     filter       = chomp(file("/etc/hostname"))
   }
 }
-
