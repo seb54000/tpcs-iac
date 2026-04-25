@@ -36,6 +36,14 @@
     - { path: "{{ app_env_dir }}", owner: "root", group: "root", mode: "0755" }
     - { path: "{{ app_log_dir }}", mode: "0755" }
 
+- name: Ensure API log file exists with correct ownership
+  ansible.builtin.file:
+    path: "{{ api_log_file }}"
+    state: touch
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0644"
+
 - name: Synchronize API source tree
   ansible.posix.synchronize:
     src: "{{ demoboard_project_src }}/api-service/"

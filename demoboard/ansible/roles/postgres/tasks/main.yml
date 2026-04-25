@@ -28,7 +28,7 @@
 
 - name: Ensure PostgreSQL service is enabled and started
   ansible.builtin.service:
-    name: postgresql
+    name: postgresql@16-main
     enabled: true
     state: started
 
@@ -50,6 +50,17 @@
   community.postgresql.postgresql_privs:
     type: database
     database: "{{ database_name }}"
+    roles: "{{ database_user }}"
+    privs: ALL
+    grant_option: false
+    state: present
+
+- name: Grant schema privileges to application user
+  become_user: postgres
+  community.postgresql.postgresql_privs:
+    login_db: "{{ database_name }}"
+    type: schema
+    objs: public
     roles: "{{ database_user }}"
     privs: ALL
     grant_option: false

@@ -36,6 +36,14 @@
     - { path: "{{ app_env_dir }}", owner: "root", group: "root", mode: "0755" }
     - { path: "{{ app_log_dir }}", mode: "0755" }
 
+- name: Ensure worker log file exists with correct ownership
+  ansible.builtin.file:
+    path: "{{ worker_log_file }}"
+    state: touch
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0644"
+
 - name: Synchronize worker source tree
   ansible.posix.synchronize:
     src: "{{ demoboard_project_src }}/worker-service/"
