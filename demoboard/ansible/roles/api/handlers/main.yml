@@ -1,0 +1,5 @@
+---
+- name: Restart demoboard api
+  ansible.builtin.service:
+    name: demoboard-api
+    state: restarted

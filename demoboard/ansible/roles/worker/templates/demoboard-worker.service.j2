@@ -1,0 +1,19 @@
+[Unit]
+Description=Demoboard Worker
+After=network.target postgresql.service redis-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_group }}
+WorkingDirectory={{ app_root }}/worker-service
+EnvironmentFile={{ app_env_dir }}/worker.env
+ExecStart={{ app_root }}/worker-service/.venv/bin/python worker.py
+Restart=always
+RestartSec=3
+StandardOutput=append:{{ worker_log_file }}
+StandardError=append:{{ worker_log_file }}
+
+[Install]
+WantedBy=multi-user.target

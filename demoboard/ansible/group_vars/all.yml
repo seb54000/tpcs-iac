@@ -1,0 +1,32 @@
+---
+app_name: demoboard
+app_user: demoboard
+app_group: demoboard
+app_root: /opt/demoboard
+app_env_dir: /etc/demoboard
+app_log_dir: /var/log/demoboard
+app_front_root: /var/www/demoboard
+
+# Source path on the student workstation.
+# tpcs-workstations clones the application repository here for tpiac.
+demoboard_project_src: "{{ lookup('env', 'HOME') }}/tpcs-iac/demoboard/ansible/demoboard-source"
+
+database_name: tasks
+database_user: demoboard
+database_password: demoboard
+database_host: "{{ hostvars[groups['_Role_db'][0]].aws_private_dns_name }}"
+database_port: 5432
+
+redis_host: "{{ hostvars[groups['_Role_redis'][0]].aws_private_dns_name }}"
+redis_port: 6379
+redis_queue: jobs
+
+demoboard_enable_worker: true
+demoboard_node_zone: "{{ hostvars[inventory_hostname].aws_placement.availability_zone | default('') }}"
+demoboard_degraded_node_zone_match: eu-west-3c
+
+demoboard_otel_enabled: false
+demoboard_otel_metrics_exemplar_filter: trace_based
+demoboard_otel_environment: vm
+demoboard_otel_exporter_otlp_endpoint: http://127.0.0.1:4318
+demoboard_otel_exporter_otlp_protocol: http/protobuf

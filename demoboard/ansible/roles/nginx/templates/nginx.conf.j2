@@ -1,0 +1,26 @@
+log_format demoboard_json escape=json
+    '{"timestamp":"$time_iso8601","service.name":"demoboard-frontend","remote_addr":"$remote_addr","request":"$request","status":$status,"body_bytes_sent":$body_bytes_sent,"request_time":$request_time,"http_referer":"$http_referer","http_user_agent":"$http_user_agent"}';
+
+server {
+    listen 80;
+    server_name _;
+
+    access_log /var/log/nginx/access.log demoboard_json;
+    error_log /var/log/nginx/error.log warn;
+
+    root {{ app_front_root }};
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://{{ hostvars[inventory_hostname].aws_tags.api_lb_dns }}:8000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}

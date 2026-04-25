@@ -1,0 +1,40 @@
+---
+- hosts: _Role_db
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: postgres
+
+- hosts: _Role_redis
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: redis
+
+- hosts: _Role_api
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: api
+
+- hosts: _Role_worker
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: worker
+
+- hosts: _Role_front
+  become: true
+  become_method: sudo
+  become_user: root
+  strategy: linear
+  roles:
+    - role: nginx

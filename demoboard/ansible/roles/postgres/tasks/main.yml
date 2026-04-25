@@ -1,0 +1,67 @@
+---
+- name: Install PostgreSQL packages
+  ansible.builtin.apt:
+    name:
+      - acl
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+    update_cache: true
+
+- name: Ensure PostgreSQL listens on all addresses
+  ansible.builtin.lineinfile:
+    path: /etc/postgresql/16/main/postgresql.conf
+    regexp: "^#?listen_addresses\\s*="
+    line: "listen_addresses = '*'"
+  notify: Restart postgresql
+
+- name: Allow API and worker nodes to access PostgreSQL
+  ansible.builtin.blockinfile:
+    path: /etc/postgresql/16/main/pg_hba.conf
+    marker: "# {mark} ANSIBLE DEMOBOARD"
+    block: |
+      {% for host in groups['_Role_api'] + groups['_Role_worker'] %}
+      host    {{ database_name }}    {{ database_user }}    {{ hostvars[host].aws_private_ip_address }}/32    md5
+      {% endfor %}
+  notify: Restart postgresql
+
+- name: Ensure PostgreSQL service is enabled and started
+  ansible.builtin.service:
+    name: postgresql@16-main
+    enabled: true
+    state: started
+
+- name: Ensure application database exists
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: "{{ database_name }}"
+    state: present
+
+- name: Ensure application database user exists
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ database_user }}"
+    password: "{{ database_password }}"
+    state: present
+
+- name: Grant database privileges to application user
+  become_user: postgres
+  community.postgresql.postgresql_privs:
+    type: database
+    database: "{{ database_name }}"
+    roles: "{{ database_user }}"
+    privs: ALL
+    grant_option: false
+    state: present
+
+- name: Grant schema privileges to application user
+  become_user: postgres
+  community.postgresql.postgresql_privs:
+    login_db: "{{ database_name }}"
+    type: schema
+    objs: public
+    roles: "{{ database_user }}"
+    privs: ALL
+    grant_option: false
+    state: present
