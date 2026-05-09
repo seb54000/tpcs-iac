@@ -160,12 +160,13 @@
     enabled: true
     state: started
 
-- name: deploy custom monitor.html
-  template:
+- name: Deploy custom monitor.html
+  ansible.builtin.template:
     src: "monitor.html.j2"
-    dest: "{{ app_root }}/frontend-service/monitor.html"
-    mode: 0666
-  notify: Reload nginx
+    dest: "{{ app_front_root }}/monitor.html"
+    owner: www-data
+    group: www-data
+    mode: "0644"
 
 - name: Test file monitor
   ansible.builtin.uri:
