@@ -42,7 +42,7 @@ resource "aws_instance" "api" {
 
   ami           = var.ubuntu_ami
   subnet_id     = aws_subnet.private_subnet[count.index].id
-  instance_type = "t3.medium"
+  instance_type = "t3.small"
   vpc_security_group_ids = [
     aws_security_group.internal_allow_all.id,
     aws_security_group.ssh.id,
@@ -95,7 +95,7 @@ resource "aws_instance" "worker" {
 resource "aws_instance" "db" {
   ami           = var.ubuntu_ami
   subnet_id     = aws_subnet.private_subnet[0].id
-  instance_type = "t3.medium"
+  instance_type = "t3.small"
   vpc_security_group_ids = [
     aws_security_group.internal_allow_all.id,
     aws_security_group.ssh.id,
