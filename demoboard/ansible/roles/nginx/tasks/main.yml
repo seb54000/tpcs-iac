@@ -159,3 +159,21 @@
     name: nginx
     enabled: true
     state: started
+
+- name: Deploy custom monitor.html
+  ansible.builtin.template:
+    src: "monitor.html.j2"
+    dest: "{{ app_front_root }}/monitor.html"
+    owner: www-data
+    group: www-data
+    mode: "0644"
+
+- name: Test file monitor
+  ansible.builtin.uri:
+    url: "http://{{ hostvars[inventory_hostname].aws_tags.front_lb_dns }}/monitor.html"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 5
+  delay: 1
