@@ -37,4 +37,6 @@
   become_user: root
   strategy: linear
   roles:
+    - role: aws_cli
+      tags: aws_cli
     - role: nginx
