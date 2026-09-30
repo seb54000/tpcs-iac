@@ -20,3 +20,7 @@ export AWS_DEFAULT_REGION=us-east-1
 export TF_VAR_ssh_key_public=$(cat ~/tpcs-iac/demoboard/terraform/tp-iac.pub)
 export TF_VAR_demoboard_aws_zones='["us-east-1a","us-east-1b","us-east-1c"]'
 ```
+
+## Versions validées
+
+Voir la [référence Demoboard du 30 septembre 2026](demoboard/ansible/versions/README.md).

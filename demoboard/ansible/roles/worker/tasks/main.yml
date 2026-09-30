@@ -69,9 +69,15 @@
     cmd: python3 -m venv {{ app_root }}/worker-service/.venv
     creates: "{{ app_root }}/worker-service/.venv/bin/activate"
 
+- name: Copy captured worker dependency lock
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/versions/worker-requirements.lock.txt"
+    dest: "{{ app_env_dir }}/worker-requirements.lock.txt"
+    mode: '0644'
+
 - name: Install worker Python dependencies
   ansible.builtin.pip:
-    requirements: "{{ app_root }}/worker-service/requirements.txt"
+    requirements: "{{ app_env_dir }}/worker-requirements.lock.txt"
     virtualenv: "{{ app_root }}/worker-service/.venv"
   notify: Restart demoboard worker
 

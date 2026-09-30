@@ -69,9 +69,15 @@
     cmd: python3 -m venv {{ app_root }}/api-service/.venv
     creates: "{{ app_root }}/api-service/.venv/bin/activate"
 
+- name: Copy captured api dependency lock
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/versions/api-requirements.lock.txt"
+    dest: "{{ app_env_dir }}/api-requirements.lock.txt"
+    mode: '0644'
+
 - name: Install API Python dependencies
   ansible.builtin.pip:
-    requirements: "{{ app_root }}/api-service/requirements.txt"
+    requirements: "{{ app_env_dir }}/api-requirements.lock.txt"
     virtualenv: "{{ app_root }}/api-service/.venv"
   notify: Restart demoboard api
 

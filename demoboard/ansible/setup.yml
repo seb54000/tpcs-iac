@@ -1,4 +1,10 @@
 ---
+- name: Apply the captured Demoboard runtime baseline
+  hosts: _Role_front:_Role_api:_Role_worker:_Role_db:_Role_redis
+  become: true
+  tasks:
+    - ansible.builtin.import_tasks: versions/apt.yml
+
 - hosts: _Role_db
   become: true
   become_method: sudo

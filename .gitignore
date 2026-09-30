@@ -4,3 +4,8 @@ terraform/terraform.tfstate*
 terraform/myplan
 
 **/.DS_store
+# Provider selections are part of the validated TP baseline.
+!terraform/.terraform.lock.hcl
+!demoboard/terraform/.terraform.lock.hcl
+
+__pycache__/

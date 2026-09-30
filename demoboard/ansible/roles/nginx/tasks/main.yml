@@ -60,7 +60,7 @@
       - nginx
       - nodejs
       - rsync
-    state: latest
+    state: present
     update_cache: true
 
 - name: Check installed Node.js version
@@ -68,11 +68,11 @@
   register: frontend_node_version
   changed_when: false
 
-- name: Fail if Node.js major version is too old for Vite 7
+- name: Verify captured Node.js build version
   ansible.builtin.assert:
     that:
-      - "(frontend_node_version.stdout | regex_replace('^v', '') | split('.') | first | int) >= 20"
-    fail_msg: "Installed Node.js version {{ frontend_node_version.stdout }} is too old; expected >= 20 for Vite 7."
+      - "frontend_node_version.stdout == 'v22.23.3'"
+    fail_msg: "Installed Node.js version {{ frontend_node_version.stdout }} differs from the validated baseline; expected v22.23.3."
 
 - name: Ensure demoboard group exists for frontend
   ansible.builtin.group:

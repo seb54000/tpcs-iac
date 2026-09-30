@@ -1,2 +1,4 @@
 *venv*
 terraform.tfstate
+# Per-run software reports stay local until reviewed/sanitized.
+version-reports/

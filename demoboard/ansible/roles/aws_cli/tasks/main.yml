@@ -18,7 +18,7 @@
   block:
     - name: Download AWS CLI v2 installer
       ansible.builtin.get_url:
-        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.37.6.zip
         dest: /tmp/awscliv2.zip
         mode: "0644"
 
@@ -80,3 +80,7 @@
     mode: "0600"
   when: controller_aws_config_file.stat.exists
   no_log: true
+
+- name: Verify the captured AWS CLI runtime version
+  ansible.builtin.assert:
+    that: "'aws-cli/2.37.6 ' in aws_cli_v2_verify.stdout"
