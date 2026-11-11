@@ -1,35 +1,11 @@
-
-resource "aws_instance" "first-in-code" {
-  ami             = "<AMI-ID-for-your-region>"
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = aws_instance.test-instance.id
-    filter = chomp(file("/etc/hostname"))
-  }
-}
-
-resource "aws_instance" "test-instance" {
-  ami             = "<AMI-ID-for-your-region>"
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "my-vm"
-    filter = chomp(file("/etc/hostname"))
-  }
-
-  # provisioner "file" {
-  #   source      = "config.txt"
-  #   destination = "/etc/config.txt"
-  # }
-
-  depends_on = [
-    null_resource.config_generator
-  ]
-}
-
-resource "null_resource" "config_generator" {
+resource "null_resource" "base" {
   provisioner "local-exec" {
-    command = "echo 'myconfig' > config.txt"
+    command = "sleep 10 && echo pret > marqueur.txt"
+  }
+}
+
+resource "null_resource" "app" {
+  provisioner "local-exec" {
+    command = "echo ${null_resource.base.id}"
   }
 }
