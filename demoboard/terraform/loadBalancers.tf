@@ -70,6 +70,11 @@ resource "aws_lb_target_group" "lb_tg_api" {
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
 
+  health_check {
+    path    = "/healthz"
+    matcher = "200"
+  }
+
   tags = {
     Name   = "lb-api"
     filter = chomp(file("/etc/hostname"))
